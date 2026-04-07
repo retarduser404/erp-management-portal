@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h1>Attendance Tracking</h1>
+    <p style="color: #8f9bba;">Monitor student presence. System automatically flags low attendance.</p>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Classes Attended</th>
+            <th>Total Classes</th>
+            <th>Health Status</th>
+            <th>Percentage</th>
+        </tr>
+        {% for record in attendance %}
+        <tr>
+            <td><strong>{{ record.name }}</strong></td>
+            <td>{{ record.present }}</td>
+            <td>{{ record.total }}</td>
+            <td>
+                {% if record.percentage < 75 %}
+                    <span class="badge badge-danger"><i class="fa-solid fa-triangle-exclamation"></i> Action Required</span>
+                {% else %}
+                    <span class="badge badge-success"><i class="fa-solid fa-check"></i> Healthy</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if record.percentage < 75 %}
+                    <strong style="color: var(--danger);">{{ record.percentage }}%</strong>
+                {% else %}
+                    <strong style="color: var(--success);">{{ record.percentage }}%</strong>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

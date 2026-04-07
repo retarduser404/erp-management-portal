@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1>Student Directory</h1>
+    <div style="position: relative;">
+        <i class="fa-solid fa-search" style="position: absolute; left: 15px; top: 15px; color: #8f9bba;"></i>
+        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search directory..." style="padding-left: 40px; width: 300px; border-radius: 20px;">
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-user-plus"></i> Enroll New Student</h3>
+    <form action="{{ url_for('add_student') }}" method="POST">
+        <div class="form-grid">
+            <div>
+                <label>Student ID</label>
+                <input type="text" name="id" placeholder="e.g., S105" required>
+            </div>
+            <div>
+                <label>Full Name</label>
+                <input type="text" name="name" placeholder="John Doe" required>
+            </div>
+            <div>
+                <label>Course</label>
+                <select name="course">
+                    <option value="BCA">BCA</option>
+                    <option value="BBA">BBA</option>
+                    <option value="B.Tech">B.Tech</option>
+                </select>
+            </div>
+            <div>
+                <label>Year</label>
+                <select name="year">
+                    <option value="1st">1st Year</option>
+                    <option value="2nd">2nd Year</option>
+                    <option value="3rd">3rd Year</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" style="margin-top: 20px;"><i class="fa-solid fa-check"></i> Save Student</button>
+    </form>
+</div>
+
+<div class="card">
+    <table id="dataTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Status</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td><strong>{{ student.id }}</strong></td>
+            <td>{{ student.name }}</td>
+            <td><span class="badge badge-primary">{{ student.course }}</span></td>
+            <td>{{ student.year }}</td>
+            <td><span class="badge badge-success">Active</span></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

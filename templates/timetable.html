@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h1>Master Schedule</h1>
+    <p style="color: #8f9bba;">Weekly academic timetable and resource allocation.</p>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Day of Week</th>
+            <th>Time Slot</th>
+            <th>Subject & Module</th>
+            <th>Session Type</th>
+        </tr>
+        {% for class in timetable %}
+        <tr>
+            <td><strong>{{ class.day }}</strong></td>
+            <td><i class="fa-regular fa-clock" style="color: #8f9bba;"></i> {{ class.time }}</td>
+            <td>{{ class.subject }}</td>
+            <td>
+                {% if class.type == 'theory' %}
+                    <span class="badge badge-primary">Theory Lecture</span>
+                {% else %}
+                    <span class="badge" style="background: #e0cafe; color: #5a189a;">Laboratory</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

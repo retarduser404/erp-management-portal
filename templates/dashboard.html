@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h1>Admin Dashboard</h1>
+    <p style="color: #8f9bba;">Welcome back! Here is what is happening today.</p>
+</div>
+
+<div class="dashboard-grid">
+    <div class="card stat-card">
+        <div>
+            <h3 style="color: #8f9bba; font-size: 14px;">Total Students</h3>
+            <h2 style="font-size: 32px; margin-top: 5px;">{{ stats.students }}</h2>
+        </div>
+        <i class="fa-solid fa-users icon"></i>
+    </div>
+    
+    <div class="card stat-card">
+        <div>
+            <h3 style="color: #8f9bba; font-size: 14px;">Total Faculty</h3>
+            <h2 style="font-size: 32px; margin-top: 5px;">{{ stats.faculty }}</h2>
+        </div>
+        <i class="fa-solid fa-chalkboard-user icon" style="color: var(--success);"></i>
+    </div>
+
+    <div class="card stat-card">
+        <div>
+            <h3 style="color: #8f9bba; font-size: 14px;">Active Courses</h3>
+            <h2 style="font-size: 32px; margin-top: 5px;">{{ stats.courses }}</h2>
+        </div>
+        <i class="fa-solid fa-book icon" style="color: var(--warning);"></i>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-bottom: 15px;"><i class="fa-solid fa-bell"></i> System Notifications</h3>
+    <table style="margin-top: 0;">
+        <tr>
+            <td><span class="badge badge-primary">Update</span></td>
+            <td>New curriculum uploaded for BCA 2nd Year.</td>
+            <td style="color: #8f9bba; text-align: right;">10 mins ago</td>
+        </tr>
+        <tr>
+            <td><span class="badge badge-success">Fee</span></td>
+            <td>Fee payment of ₹25,000 received from Priya Sharma.</td>
+            <td style="color: #8f9bba; text-align: right;">1 hour ago</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

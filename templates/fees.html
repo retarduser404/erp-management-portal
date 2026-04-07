@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h1>Financial Overview</h1>
+    <p style="color: #8f9bba;">Track tuition payments and outstanding balances.</p>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Total Fee Invoice</th>
+            <th>Amount Received</th>
+            <th>Payment Status</th>
+            <th>Outstanding Balance</th>
+            <th>Action</th>
+        </tr>
+        {% for fee in fees %}
+        <tr>
+            <td><strong>{{ fee.name }}</strong></td>
+            <td>₹{{ fee.total }}</td>
+            <td>₹{{ fee.paid }}</td>
+            <td>
+                {% if fee.status == 'Paid' %}
+                    <span class="badge badge-success"><i class="fa-solid fa-check-circle"></i> Paid in Full</span>
+                {% elif fee.status == 'Partial' %}
+                    <span class="badge" style="background: #fff3cd; color: #856404;"><i class="fa-solid fa-clock"></i> Partial</span>
+                {% else %}
+                    <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Unpaid</span>
+                {% endif %}
+            </td>
+            <td><strong>₹{{ fee.balance }}</strong></td>
+            <td>
+                {% if fee.balance > 0 %}
+                <button style="padding: 6px 12px; font-size: 12px; background: white; color: var(--primary); border: 1px solid var(--primary);">Send Reminder</button>
+                {% else %}
+                <span style="color: #8f9bba; font-size: 12px;">Clear</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

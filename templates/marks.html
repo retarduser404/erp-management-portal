@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-bottom: 30px;">
+    <h1>Academic Results</h1>
+    <p style="color: #8f9bba;">Term examination scores and final grading.</p>
+</div>
+
+<div class="card">
+    <table>
+        <tr>
+            <th>Student Name</th>
+            <th>Midterm (50)</th>
+            <th>Finals (100)</th>
+            <th>Assignments (20)</th>
+            <th>Final Grade</th>
+        </tr>
+        {% for mark in marks %}
+        <tr>
+            <td><strong>{{ mark.name }}</strong></td>
+            <td>{{ mark.midterm }}</td>
+            <td>{{ mark.final }}</td>
+            <td>{{ mark.assignment }}</td>
+            <td>
+                <span class="badge" style="background: var(--dark); color: white; font-size: 14px;">{{ mark.grade }}</span>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
