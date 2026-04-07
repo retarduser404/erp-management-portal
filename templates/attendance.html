@@ -6,6 +6,48 @@
     <p style="color: #8f9bba;">Monitor student presence. System automatically flags low attendance.</p>
 </div>
 
+<!-- Faculty Marking Interface -->
+{% if session.user.role == 'faculty' %}
+<div class="card" style="background: #f0f8ff; border-left: 4px solid #007bff; margin-bottom: 30px;">
+    <h3 style="margin-top: 0; margin-bottom: 20px; color: #007bff;">
+        <i class="fa-solid fa-clipboard"></i> Mark Attendance
+    </h3>
+    <form action="{{ url_for('mark_attendance') }}" method="POST">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; align-items: flex-end;">
+            <div>
+                <label for="student_name" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                    Select Student
+                </label>
+                <select name="student_name" id="student_name" required 
+                        style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+                    <option value="">-- Choose Student --</option>
+                    {% for student in students %}
+                    <option value="{{ student.name }}">{{ student.name }} ({{ student.id }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label for="status" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                    Status
+                </label>
+                <select name="status" id="status" required 
+                        style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+                    <option value="">-- Select --</option>
+                    <option value="present">✓ Present</option>
+                    <option value="absent">✗ Absent</option>
+                </select>
+            </div>
+            
+            <button type="submit" style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">
+                <i class="fa-solid fa-check"></i> Mark
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+<!-- Attendance Records Table -->
 <div class="card">
     <table>
         <tr>

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <h1 style="margin-bottom: 30px;"><i class="fa-solid fa-user-plus"></i> Create New User</h1>
+    
+    <div class="card">
+        <form action="{{ url_for('admin_create_user') }}" method="POST">
+            <!-- Role Selection -->
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; font-size: 16px;">
+                    <i class="fa-solid fa-user-tag"></i> User Role <span style="color: #ff0000;">*</span>
+                </label>
+                <div style="display: flex; gap: 15px;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="radio" name="role" value="student" required checked style="margin-right: 8px; cursor: pointer; width: 18px; height: 18px;">
+                        <span>Student</span>
+                    </label>
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="radio" name="role" value="faculty" style="margin-right: 8px; cursor: pointer; width: 18px; height: 18px;">
+                        <span>Faculty</span>
+                    </label>
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="radio" name="role" value="admin" style="margin-right: 8px; cursor: pointer; width: 18px; height: 18px;">
+                        <span>Admin</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Username -->
+            <div style="margin-bottom: 20px;">
+                <label for="username" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                    <i class="fa-solid fa-at"></i> Username <span style="color: #ff0000;">*</span>
+                </label>
+                <input type="text" id="username" name="username" placeholder="e.g., john_doe123" required 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+            </div>
+            
+            <!-- User ID -->
+            <div style="margin-bottom: 20px;">
+                <label for="user_id" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                    <i class="fa-solid fa-id-card"></i> User ID <span style="color: #ff0000;">*</span>
+                </label>
+                <input type="text" id="user_id" name="user_id" placeholder="e.g., STU001, FAC001, ADM001" required 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+            </div>
+            
+            <!-- Full Name -->
+            <div style="margin-bottom: 20px;">
+                <label for="name" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                    <i class="fa-solid fa-user"></i> Full Name <span style="color: #ff0000;">*</span>
+                </label>
+                <input type="text" id="name" name="name" placeholder="John Doe" required 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+            </div>
+            
+            <!-- Conditional Fields -->
+            <div id="student-fields" style="display: none;">
+                <div style="margin-bottom: 20px;">
+                    <label for="course" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-book"></i> Course
+                    </label>
+                    <select id="course" name="course" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+                        <option value="">Select Course</option>
+                        <option value="BCA">BCA</option>
+                        <option value="BBA">BBA</option>
+                        <option value="B.Tech">B.Tech</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="semester" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-layer-group"></i> Semester
+                    </label>
+                    <select id="semester" name="semester" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+                        <option value="">Select Semester</option>
+                        <option value="1">1st</option>
+                        <option value="2">2nd</option>
+                        <option value="3">3rd</option>
+                        <option value="4">4th</option>
+                        <option value="5">5th</option>
+                        <option value="6">6th</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="faculty-fields" style="display: none;">
+                <div style="margin-bottom: 20px;">
+                    <label for="department" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-building"></i> Department
+                    </label>
+                    <input type="text" id="department" name="department" placeholder="Computer Science" 
+                           style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 5px; font-size: 14px;">
+                </div>
+            </div>
+            
+            <!-- Info Message -->
+            <div style="background: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 25px; border-radius: 4px;">
+                <p style="margin: 0; color: #0c5aa0; font-size: 14px;">
+                    <i class="fa-solid fa-info-circle"></i> 
+                    <strong>A secure password will be auto-generated</strong> with uppercase, lowercase, numbers, and symbols. You will see it after creation.
+                </p>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" style="width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 16px;">
+                <i class="fa-solid fa-save"></i> Create User
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Show/hide conditional fields based on role selection
+    function updateFields() {
+        const role = document.querySelector('input[name="role"]:checked').value;
+        document.getElementById('student-fields').style.display = role === 'student' ? 'block' : 'none';
+        document.getElementById('faculty-fields').style.display = role === 'faculty' ? 'block' : 'none';
+    }
+    
+    // Event listeners for role change
+    document.querySelectorAll('input[name="role"]').forEach(radio => {
+        radio.addEventListener('change', updateFields);
+    });
+    
+    // Initial update
+    updateFields();
+</script>
+
+{% endblock %}

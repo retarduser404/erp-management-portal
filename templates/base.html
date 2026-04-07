@@ -10,17 +10,74 @@
 <body style="display: block;"> {% if request.path != '/' %}
         <div class="sidebar">
             <h2><i class="fa-solid fa-graduation-cap"></i> ERP Pro</h2>
+            
+            <!-- User Profile Section -->
+            <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+                <img src="{{ session['user'].get('profile_picture', 'static/images/default-avatar.png') }}" 
+                     alt="Profile" 
+                     style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 3px solid #007bff;">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 5px;">{{ session['user']['name'] }}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">
+                    {{ session['user']['role'] }}
+                </div>
+                <a href="{{ url_for('profile') }}" style="display: inline-block; padding: 6px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 12px; width: 100%;">
+                    <i class="fa-solid fa-edit"></i> View Profile
+                </a>
+            </div>
+            
+            <!-- Dashboard - Visible to all roles -->
             <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="{{ url_for('students') }}" class="{% if request.path == '/students' %}active{% endif %}"><i class="fa-solid fa-user-graduate"></i> Students</a>
-            <a href="{{ url_for('faculty') }}"><i class="fa-solid fa-chalkboard-user"></i> Faculty</a>
+            
+            <!-- Students - Visible to Admin and Faculty -->
+            {% if session['user']['role'] in ['admin', 'faculty'] %}
+                <a href="{{ url_for('students') }}" class="{% if request.path == '/students' %}active{% endif %}"><i class="fa-solid fa-user-graduate"></i> Students</a>
+            {% endif %}
+            
+            <!-- Faculty - Visible to Admin only -->
+            {% if session['user']['role'] == 'admin' %}
+                <a href="{{ url_for('faculty') }}"><i class="fa-solid fa-chalkboard-user"></i> Faculty</a>
+            {% endif %}
+            
+            <!-- Attendance - Visible to all roles -->
             <a href="{{ url_for('attendance') }}"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+            
+            <!-- Results/Marks - Visible to all roles -->
             <a href="{{ url_for('marks') }}"><i class="fa-solid fa-file-signature"></i> Results</a>
-            <a href="{{ url_for('fees') }}"><i class="fa-solid fa-wallet"></i> Fees</a>
+            
+            <!-- Fees - Visible to Admin and Student -->
+            {% if session['user']['role'] in ['admin', 'student'] %}
+                <a href="{{ url_for('fees') }}"><i class="fa-solid fa-wallet"></i> Fees</a>
+            {% endif %}
+            
+            <!-- Timetable - Visible to all roles -->
             <a href="{{ url_for('timetable') }}"><i class="fa-solid fa-clock"></i> Timetable</a>
-            <a href="{{ url_for('login') }}" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-power-off"></i> Logout</a>
+            
+            <!-- Admin Management - Visible to Admin only -->
+            {% if session['user']['role'] == 'admin' %}
+            <div style="border-top: 2px solid #ddd; margin-top: 20px; padding-top: 20px;">
+                <div style="font-size: 12px; font-weight: 600; color: #999; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;">
+                    <i class="fa-solid fa-lock"></i> Admin Panel
+                </div>
+                <a href="{{ url_for('admin_users_list') }}" style="font-size: 14px; margin-bottom: 8px;"><i class="fa-solid fa-users"></i> Manage Users</a>
+                <a href="{{ url_for('admin_create_user') }}" style="font-size: 14px;"><i class="fa-solid fa-user-plus"></i> Create User</a>
+            </div>
+            {% endif %}
+            
+            <!-- Logout - Visible to all roles (at bottom) -->
+            <a href="{{ url_for('logout') }}" style="margin-top: auto; color: var(--danger);"><i class="fa-solid fa-power-off"></i> Logout</a>
         </div>
 
         <div class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }}" style="margin: 20px; padding: 15px; border-radius: 5px; background: {{ '#f8d7da' if category == 'error' else '#d4edda' }}; color: {{ '#721c24' if category == 'error' else '#155724' }}; border: 1px solid {{ '#f5c6cb' if category == 'error' else '#c3e6cb' }};">
+                            <i class="fa-solid {{ 'fa-exclamation-circle' if category == 'error' else 'fa-check-circle' }}"></i> {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
             {% block content %}{% endblock %}
         </div>
 
